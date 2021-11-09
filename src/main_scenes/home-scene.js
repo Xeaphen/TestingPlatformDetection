@@ -11,6 +11,7 @@ import '../prefabs/warning';
 let title;
 let availableButton = [];
 let homeButtons = [];
+let addstuff;
 let selectedPinata;
 let progress;
 let energy;
