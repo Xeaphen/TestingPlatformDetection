@@ -30,7 +30,7 @@ export default class Home extends Phaser.Scene {
 
   async create() {
     this.add.singleSprite(360, 640, 'HOME_BG', 0.32);
-    console.log(window.navigator.platform);
+    this.platformChecker();
     title = this.add.singleSprite(360, 250, 'TITLE', 0.8).setDepth(1);
     const pinataData = await this.getRequest(APICall.getUserPinata());
     // console.log(pinataData);
@@ -507,6 +507,33 @@ export default class Home extends Phaser.Scene {
         });
       },
     );
+  }
+
+  platformChecker() {
+    let textChecker;
+    function getVideoCardInfo() {
+      const gl = document.createElement('canvas').getContext('webgl');
+      if (!gl) {
+          return {
+          error: "no webgl",
+          };
+      }
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      return debugInfo ? {
+          vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+          renderer:  gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
+      } : {
+          error: "no WEBGL_debug_renderer_info",
+      };
+      }
+      console.log(getVideoCardInfo().vendor.toString());
+      textChecker = getVideoCardInfo().vendor.toString();
+      if(textChecker.includes("Intel")|| textChecker.includes("NVIDIA")|| textChecker.includes("AMD")) {
+        this.createWarningMessage(textChecker,true);
+      }
+      else {
+        this.createWarningMessage(textChecker,true);
+      }
   }
 
   changeButtonColor(button) {
